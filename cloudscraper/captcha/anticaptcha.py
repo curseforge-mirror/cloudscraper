@@ -55,7 +55,7 @@ class captchaSolver(Captcha):
         if not captchaParams.get("api_key"):
             raise CaptchaParameter("anticaptcha: Missing api_key parameter.")
 
-        client = AnticaptchaClient(captchaParams.get('api_key'))
+        client = AnticaptchaClient(captchaParams.get("api_key"))
         client.SOFT_ID = 959
 
         if captchaParams.get("proxy") and not captchaParams.get("no_proxy"):

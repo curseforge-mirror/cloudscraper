@@ -40,9 +40,9 @@ class Cloudflare:
             return (
                 resp.headers.get("Server", "").startswith("cloudflare")
                 and resp.status_code in [429, 503]
-                and re.search(r'/cdn-cgi/images/trace/jsch/', resp.text, re.M | re.S)
+                and re.search(r"/cdn-cgi/images/trace/jsch/", resp.text, re.M | re.S)
                 and re.search(
-                    r'''<form .*?="challenge-form" action="/\S+__cf_chl_f_tk=''',
+                    r"""<form .*?="challenge-form" action="/\S+__cf_chl_f_tk=""",
                     resp.text,
                     re.M | re.S,
                 )
@@ -58,13 +58,10 @@ class Cloudflare:
 
     def is_New_IUAM_Challenge(self, resp):
         try:
-            return (
-                self.is_IUAM_Challenge(resp)
-                and re.search(
-                    r"cpo.src\s*(.*)/cdn-cgi/challenge-platform/\S+orchestrate/jsch/v1",
-                    resp.text,
-                    re.M | re.S,
-                )
+            return self.is_IUAM_Challenge(resp) and re.search(
+                r"cpo.src\s*(.*)/cdn-cgi/challenge-platform/\S+orchestrate/jsch/v1",
+                resp.text,
+                re.M | re.S,
             )
         except AttributeError:
             pass
@@ -77,13 +74,10 @@ class Cloudflare:
 
     def is_New_Captcha_Challenge(self, resp):
         try:
-            return (
-                self.is_Captcha_Challenge(resp)
-                and re.search(
-                    r"cpo.src\s*(.*)/cdn-cgi/challenge-platform/\S+orchestrate/(captcha|managed)/v1",
-                    resp.text,
-                    re.M | re.S,
-                )
+            return self.is_Captcha_Challenge(resp) and re.search(
+                r"cpo.src\s*(.*)/cdn-cgi/challenge-platform/\S+orchestrate/(captcha|managed)/v1",
+                resp.text,
+                re.M | re.S,
             )
         except AttributeError:
             pass
@@ -100,12 +94,8 @@ class Cloudflare:
             return (
                 resp.headers.get("Server", "").startswith("cloudflare")
                 and resp.status_code == 403
-                and re.search(r'/cdn-cgi/images/trace/(captcha|managed)/', resp.text, re.M | re.S)
-                and re.search(
-                    r"<form .*?=\"challenge-form\" action=\"/\S+__cf_chl_f_tk=",
-                    resp.text,
-                    re.M | re.S
-                )
+                and re.search(r"/cdn-cgi/images/trace/(captcha|managed)/", resp.text, re.M | re.S)
+                and re.search(r"<form .*?=\"challenge-form\" action=\"/\S+__cf_chl_f_tk=", resp.text, re.M | re.S)
             )
         except AttributeError:
             pass
